@@ -66,8 +66,8 @@ class ProductController extends Controller
                 'image' => $request->input('image')
             ]);
 
-            $product->save();
             $product->categories()->attach($request->input('categories'));
+            $product->save();
 
             return response('product successfully added!', 200);
         }
