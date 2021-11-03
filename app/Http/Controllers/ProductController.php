@@ -14,7 +14,7 @@ class ProductController extends Controller
      */
     public function index()
     {
-        //
+        return "Yes";
     }
 
     /**
@@ -24,7 +24,7 @@ class ProductController extends Controller
      */
     public function create()
     {
-        //
+        return "Yes";
     }
 
     /**
@@ -35,7 +35,7 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        return "Yes";
     }
 
     /**
@@ -46,7 +46,7 @@ class ProductController extends Controller
      */
     public function show(Product $product)
     {
-        //
+        return "Yes";
     }
 
     /**
@@ -57,7 +57,7 @@ class ProductController extends Controller
      */
     public function edit(Product $product)
     {
-        //
+        return "Yes";
     }
 
     /**
@@ -69,7 +69,7 @@ class ProductController extends Controller
      */
     public function update(Request $request, Product $product)
     {
-        //
+        return "Yes";
     }
 
     /**
@@ -80,6 +80,6 @@ class ProductController extends Controller
      */
     public function destroy(Product $product)
     {
-        //
+        return "Yes";
     }
 }
