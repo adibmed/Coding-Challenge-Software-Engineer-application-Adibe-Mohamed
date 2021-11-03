@@ -6,6 +6,7 @@ use App\Models\Category;
 use App\Models\Product as ProductModel;
 use Illuminate\Support\Facades\Validator as FacadesValidator;
 
+
 class Product
 {
 

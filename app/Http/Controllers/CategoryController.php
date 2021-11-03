@@ -2,18 +2,29 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Category;
-use App\Services\Category as CategoryService;
+use App\Repositories\CategoryRepository;
 
 class CategoryController extends Controller
 {
+    protected $category;
+
     /**
-     * Display a listing of the resource.
+     * categoryController constructor.
      *
-     * @return \Illuminate\Http\Response
+     * @param CategoryRepository $category
      */
-    public function index(CategoryService $categoryService)
+    public function __construct(CategoryRepository $category)
     {
-        return $categoryService->get();
+        $this->category = $category;
+    }
+
+    /**
+     * List all categorys.
+     *
+     * @return mixed
+     */
+    public function index()
+    {
+        return $this->category->all();
     }
 }
