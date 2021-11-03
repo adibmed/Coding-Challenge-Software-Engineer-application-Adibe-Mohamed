@@ -44,7 +44,7 @@
               >
             </div>
           </div>
-          <button type="submit" class="btn btn-primary">Add Post</button>
+          <button type="submit" class="btn btn-primary">Add Product</button>
         </form>
       </div>
       {{ product_categories }}

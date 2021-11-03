@@ -7,32 +7,42 @@ use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
+use App\Services\Product as ProductService;
+
 class ProductController extends Controller
 {
+
+
+    /**
+     * Create a new controller instance.
+     *
+     * @param Request $request
+     * @return void
+     */
+    public function __construct(Request $request)
+    {
+        $this->_request  = $request;
+    }
+
+
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(ProductService $producService)
     {
-        if (request()->has('filter') && request()->filled('filter'))
-            $category_id = Category::where('name', request()->filter)->first()->id;
+        return $producService->get(
+            [
+                'filter' => request()->filter,
+                'sort' => request()->sort
+            ],
+            request()->has('filter'),
+            request()->has('sort'),
+            request()->filled('filter'),
+            request()->filled('sort')
 
-        // do filter and sort
-        if (request()->has('sort') && request()->filled('sort') && request()->has('filter') && request()->filled('filter')) {
-            return Product::whereRelation('categories', 'category_id', $category_id)->orderBy(request()->sort)->paginate(6);
-        }
-        // do only filter
-        else if (request()->has('filter') && request()->filled('filter')) {
-            return Product::whereRelation('categories', 'category_id', $category_id)->paginate(6);
-        }
-        // do only sort
-        else if (request()->has('sort') && request()->filled('sort')) {
-            return Product::orderBy(request()->sort)->paginate(6);
-        }
-        // on return in random order
-        else return Product::inRandomOrder()->paginate(6);
+        );
     }
 
 
@@ -44,30 +54,14 @@ class ProductController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(ProductService $producService)
     {
-        $rules = [
-            "name" => "required|min:1|max:255",
-            "description" => "required|min:0|max:255",
-            "price" => "required|numeric|min:0|max:10000",
-            "image" => "required|min:0|max:255",
-            "categories" => "required|array|min:3"
-        ];
+        $validator = $producService->validator($this->_request->all());
 
-
-        $validator = Validator::make($request->all(), $rules);
 
         if (!$validator->fails()) {
 
-            $product = new Product([
-                'name' => $request->input('name'),
-                'description' => $request->input('description'),
-                'price' => $request->input('price'),
-                'image' => $request->input('image')
-            ]);
-
-            $product->categories()->attach($request->input('categories'));
-            $product->save();
+            $producService->create($this->_request->all());
 
             return response('product successfully added!', 200);
         }
@@ -104,8 +98,8 @@ class ProductController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(ProductService $producService)
     {
-        //
+        return $producService->delete(request()->id);
     }
 }

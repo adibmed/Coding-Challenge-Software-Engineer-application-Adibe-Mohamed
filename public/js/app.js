@@ -2096,8 +2096,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({});
 
 /***/ }),
@@ -38916,7 +38914,7 @@ var render = function () {
                   staticClass: "nav-item nav-link",
                   attrs: { to: { name: "add" } },
                 },
-                [_vm._v("Add Post")]
+                [_vm._v("Add Product")]
               ),
             ],
             1
@@ -39158,7 +39156,7 @@ var render = function () {
             _c(
               "button",
               { staticClass: "btn btn-primary", attrs: { type: "submit" } },
-              [_vm._v("Add Post")]
+              [_vm._v("Add Product")]
             ),
           ]
         ),

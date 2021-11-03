@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Category;
-use Illuminate\Http\Request;
+use App\Services\Category as CategoryService;
 
 class CategoryController extends Controller
 {
@@ -12,8 +12,8 @@ class CategoryController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(CategoryService $categoryService)
     {
-        return Category::all();
+        return $categoryService->get();
     }
 }
