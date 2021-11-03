@@ -18,7 +18,7 @@
           </div>
           <div class="form-group">
             <label>Price</label>
-            <input type="number" class="form-control" v-model="product.price" />
+            <input type="text" class="form-control" v-model="product.price" />
           </div>
           <div class="form-group">
             <label>Image</label>
@@ -35,14 +35,7 @@
 export default {
   data() {
     return {
-      product: [
-        {
-          name: "Blabla",
-          description: "Blafladfasdf",
-          price: 12.33,
-          image: "https:sdfs",
-        },
-      ],
+      product: {},
     };
   },
   methods: {

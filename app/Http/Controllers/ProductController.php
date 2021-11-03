@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class ProductController extends Controller
 {
@@ -14,18 +16,27 @@ class ProductController extends Controller
      */
     public function index()
     {
-        return "Yes";
+        if (request()->has('filter') && request()->filled('filter'))
+            $category_id = Category::where('name', request()->filter)->first()->id;
+
+        // do filter and sort
+        if (request()->has('sort') && request()->filled('sort') && request()->has('filter') && request()->filled('filter')) {
+            return Product::whereRelation('categories', 'category_id', $category_id)->orderBy(request()->sort)->paginate(6);
+        }
+        // do only filter
+        else if (request()->has('filter') && request()->filled('filter')) {
+            return Product::whereRelation('categories', 'category_id', $category_id)->paginate(6);
+        }
+        // do only sort
+        else if (request()->has('sort') && request()->filled('sort')) {
+            return Product::orderBy(request()->sort)->paginate(6);
+        }
+        // on return in random order
+        else return Product::inRandomOrder()->paginate(6);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        return "Yes";
-    }
+
+
 
     /**
      * Store a newly created resource in storage.
@@ -35,51 +46,62 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        return "Yes";
+        $rules = [
+            "name" => "required|min:1|max:255",
+            "description" => "required|min:0|max:255",
+            "price" => "required|numeric|min:0|max:10000",
+            "image" => "required|min:0|max:255"
+        ];
+
+        $validator = Validator::make($request->all(), $rules);
+
+        if (!$validator->fails()) {
+
+            $post = new Product([
+                'name' => $request->input('name'),
+                'description' => $request->input('description'),
+                'price' => $request->input('price'),
+                'image' => $request->input('image')
+            ]);
+            $post->save();
+
+            return response('product successfully added!', 200);
+        }
+
+        return response('something went wrong', 500);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Product  $product
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Product $product)
+    public function show($id)
     {
-        return "Yes";
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Product  $product
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Product $product)
-    {
-        return "Yes";
+        //
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Product  $product
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Product $product)
+    public function update(Request $request, $id)
     {
-        return "Yes";
+        //
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Product  $product
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Product $product)
+    public function destroy($id)
     {
-        return "Yes";
+        //
     }
 }

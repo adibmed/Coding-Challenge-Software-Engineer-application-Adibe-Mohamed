@@ -15,7 +15,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        // // Create categories
+        // Create categories
         \App\Models\Category::factory(5)->create();
 
 
@@ -25,7 +25,7 @@ class DatabaseSeeder extends Seeder
         ]);
 
         // Create products and append categories
-        \App\Models\Product::factory(1)->create()->each(function ($product) {
+        \App\Models\Product::factory(20)->create()->each(function ($product) {
 
             $product->categories()->attach(Category::inRandomOrder()->take(3)->get()->pluck('id'));
         });
