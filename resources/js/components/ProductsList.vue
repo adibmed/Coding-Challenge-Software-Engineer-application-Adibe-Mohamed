@@ -134,7 +134,6 @@ export default {
 
     async getProducts() {
       this.isLoading = true;
-      let query = "product";
       await this.axios
         .get("product", {
           params: {

@@ -63,6 +63,7 @@ class ProductController extends Controller
                 'price' => $request->input('price'),
                 'image' => $request->input('image')
             ]);
+
             $post->save();
 
             return response('product successfully added!', 200);
