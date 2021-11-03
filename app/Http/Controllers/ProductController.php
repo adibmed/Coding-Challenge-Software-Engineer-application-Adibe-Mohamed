@@ -50,21 +50,24 @@ class ProductController extends Controller
             "name" => "required|min:1|max:255",
             "description" => "required|min:0|max:255",
             "price" => "required|numeric|min:0|max:10000",
-            "image" => "required|min:0|max:255"
+            "image" => "required|min:0|max:255",
+            "categories" => "required|array|min:3"
         ];
+
 
         $validator = Validator::make($request->all(), $rules);
 
         if (!$validator->fails()) {
 
-            $post = new Product([
+            $product = new Product([
                 'name' => $request->input('name'),
                 'description' => $request->input('description'),
                 'price' => $request->input('price'),
                 'image' => $request->input('image')
             ]);
 
-            $post->save();
+            $product->save();
+            $product->categories()->attach($request->input('categories'));
 
             return response('product successfully added!', 200);
         }
