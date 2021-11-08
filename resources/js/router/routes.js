@@ -1,5 +1,5 @@
-import ProductsList  from './components/ProductsList.vue';
-import AddProduct from './components/AddProduct.vue'; 
+import ProductsList  from '../components/ProductsList.vue';
+import AddProduct from '../components/AddProduct.vue'; 
   
 export const routes = [
     {

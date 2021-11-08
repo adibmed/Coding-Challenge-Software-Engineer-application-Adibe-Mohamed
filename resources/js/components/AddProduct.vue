@@ -47,7 +47,6 @@
           <button type="submit" class="btn btn-primary">Add Product</button>
         </form>
       </div>
-      {{ product_categories }}
     </div>
   </div>
 </template>
@@ -64,12 +63,10 @@ export default {
   methods: {
     addProduct() {
       this.product.categories = this.product_categories;
-      console.log(this.product)
       this.axios
         .post("product", this.product)
         .then(
           (response) => this.$router.push({ name: "home" })
-          // console.log(response.data)
         )
         .catch((error) => console.log(error))
         .finally(() => (this.loading = false));
@@ -77,7 +74,7 @@ export default {
     async getCategories() {
       await this.axios
         .get("categories")
-        .then((response) => (this.categories = response.data))
+        .then((response) => (this.categories = response.data.data))
         .catch((error) => console.log(error));
     },
   },

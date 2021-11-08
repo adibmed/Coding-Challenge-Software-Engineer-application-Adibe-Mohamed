@@ -8,21 +8,17 @@ require('./bootstrap');
 import Vue from 'vue';
 window.Vue = require('vue');
 import App from './App.vue';
-import VueRouter from 'vue-router';
-import VueAxios from 'vue-axios';
 import axios from 'axios';
-import {routes} from './routes';
-
+import VueAxios from 'vue-axios';
+import router from './router'
+import VueRouter from 'vue-router';
 axios.defaults.baseURL = "http://localhost:8000/api/"
  
   
 Vue.use(VueRouter);
 Vue.use(VueAxios, axios);
   
-const router = new VueRouter({
-    mode: 'history',
-    routes: routes
-});
+
   
 const app = new Vue({
     el: '#app',

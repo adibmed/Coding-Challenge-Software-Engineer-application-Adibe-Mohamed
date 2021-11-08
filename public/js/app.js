@@ -2172,7 +2172,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
-//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
@@ -2186,13 +2185,11 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       var _this = this;
 
       this.product.categories = this.product_categories;
-      console.log(this.product);
       this.axios.post("product", this.product).then(function (response) {
         return _this.$router.push({
           name: "home"
         });
-      } // console.log(response.data)
-      )["catch"](function (error) {
+      })["catch"](function (error) {
         return console.log(error);
       })["finally"](function () {
         return _this.loading = false;
@@ -2208,7 +2205,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
               case 0:
                 _context.next = 2;
                 return _this2.axios.get("categories").then(function (response) {
-                  return _this2.categories = response.data;
+                  return _this2.categories = response.data.data;
                 })["catch"](function (error) {
                   return console.log(error);
                 });
@@ -2346,14 +2343,24 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
       products: [],
       categories: [],
       currentPage: 0,
-      sort: "",
-      filter: "",
+      sort: "name",
+      category: 1,
       isLoading: false,
       canLoadNext: true,
       canLoadPrev: true,
@@ -2386,29 +2393,30 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       var _this = this;
 
       return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee() {
+        var params;
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
                 _this.isLoading = true;
-                _context.next = 3;
+                params = {};
+                if (_this.currentPage) params.page = _this.currentPage;
+                if (_this.category) params.category = _this.category;
+                if (_this.sort) params.sort = _this.sort;
+                _context.next = 7;
                 return _this.axios.get("product", {
-                  params: {
-                    page: _this.currentPage,
-                    sort: _this.sort,
-                    filter: _this.filter
-                  }
+                  params: params
                 }).then(function (response) {
                   _this.products = [];
-                  _this.products = response.data.data;
-                  _this.totalPages = response.data.last_page;
+                  _this.products = response.data.data.data;
+                  _this.totalPages = response.data.data.last_page;
                 })["catch"](function (error) {
                   return console.log(error);
                 })["finally"](function () {
                   return _this.loading = false;
                 });
 
-              case 3:
+              case 7:
               case "end":
                 return _context.stop();
             }
@@ -2426,7 +2434,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
               case 0:
                 _context2.next = 2;
                 return _this2.axios.get("categories").then(function (response) {
-                  return _this2.categories = response.data;
+                  return _this2.categories = response.data.data;
                 })["catch"](function (error) {
                   return console.log(error);
                 });
@@ -2458,11 +2466,11 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm.js");
 /* harmony import */ var _App_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./App.vue */ "./resources/js/App.vue");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var vue_axios__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! vue-axios */ "./node_modules/vue-axios/dist/vue-axios.esm.min.js");
+/* harmony import */ var _router__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./router */ "./resources/js/router/index.js");
 /* harmony import */ var vue_router__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! vue-router */ "./node_modules/vue-router/dist/vue-router.esm.js");
-/* harmony import */ var vue_axios__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vue-axios */ "./node_modules/vue-axios/dist/vue-axios.esm.min.js");
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var _routes__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./routes */ "./resources/js/routes.js");
 /**
  * First we will load all of this project's JavaScript dependencies which
  * includes Vue and other libraries. It is a great starting point when
@@ -2477,16 +2485,12 @@ window.Vue = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm.js"
 
 
 
-(axios__WEBPACK_IMPORTED_MODULE_2___default().defaults.baseURL) = "http://localhost:8000/api/";
+(axios__WEBPACK_IMPORTED_MODULE_1___default().defaults.baseURL) = "http://localhost:8000/api/";
 vue__WEBPACK_IMPORTED_MODULE_4__["default"].use(vue_router__WEBPACK_IMPORTED_MODULE_5__["default"]);
-vue__WEBPACK_IMPORTED_MODULE_4__["default"].use(vue_axios__WEBPACK_IMPORTED_MODULE_1__["default"], (axios__WEBPACK_IMPORTED_MODULE_2___default()));
-var router = new vue_router__WEBPACK_IMPORTED_MODULE_5__["default"]({
-  mode: 'history',
-  routes: _routes__WEBPACK_IMPORTED_MODULE_3__.routes
-});
+vue__WEBPACK_IMPORTED_MODULE_4__["default"].use(vue_axios__WEBPACK_IMPORTED_MODULE_2__["default"], (axios__WEBPACK_IMPORTED_MODULE_1___default()));
 var app = new vue__WEBPACK_IMPORTED_MODULE_4__["default"]({
   el: '#app',
-  router: router,
+  router: _router__WEBPACK_IMPORTED_MODULE_3__["default"],
   render: function render(h) {
     return h(_App_vue__WEBPACK_IMPORTED_MODULE_0__["default"]);
   }
@@ -2538,10 +2542,33 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
 /***/ }),
 
-/***/ "./resources/js/routes.js":
-/*!********************************!*\
-  !*** ./resources/js/routes.js ***!
-  \********************************/
+/***/ "./resources/js/router/index.js":
+/*!**************************************!*\
+  !*** ./resources/js/router/index.js ***!
+  \**************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _routes__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./routes */ "./resources/js/router/routes.js");
+/* harmony import */ var vue_router__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vue-router */ "./node_modules/vue-router/dist/vue-router.esm.js");
+
+
+var router = new vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]({
+  mode: 'history',
+  routes: _routes__WEBPACK_IMPORTED_MODULE_0__.routes
+});
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (router);
+
+/***/ }),
+
+/***/ "./resources/js/router/routes.js":
+/*!***************************************!*\
+  !*** ./resources/js/router/routes.js ***!
+  \***************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -2549,8 +2576,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "routes": () => (/* binding */ routes)
 /* harmony export */ });
-/* harmony import */ var _components_ProductsList_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./components/ProductsList.vue */ "./resources/js/components/ProductsList.vue");
-/* harmony import */ var _components_AddProduct_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./components/AddProduct.vue */ "./resources/js/components/AddProduct.vue");
+/* harmony import */ var _components_ProductsList_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../components/ProductsList.vue */ "./resources/js/components/ProductsList.vue");
+/* harmony import */ var _components_AddProduct_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../components/AddProduct.vue */ "./resources/js/components/AddProduct.vue");
 
 
 var routes = [{
@@ -39161,7 +39188,6 @@ var render = function () {
           ]
         ),
       ]),
-      _vm._v("\n    " + _vm._s(_vm.product_categories) + "\n  "),
     ]),
   ])
 }
@@ -39196,8 +39222,8 @@ var render = function () {
       : _c("div", [
           _c("div", { staticClass: "pb-2 float-right d-flex" }, [
             _c("div", [
-              _c("label", { attrs: { for: "filter" } }, [
-                _vm._v("filer by " + _vm._s(_vm.filter)),
+              _c("label", { attrs: { for: "category" } }, [
+                _vm._v("filer by "),
               ]),
               _vm._v(" "),
               _c(
@@ -39207,12 +39233,12 @@ var render = function () {
                     {
                       name: "model",
                       rawName: "v-model",
-                      value: _vm.filter,
-                      expression: "filter",
+                      value: _vm.category,
+                      expression: "category",
                     },
                   ],
                   staticClass: "p-2",
-                  attrs: { name: "", id: "filer" },
+                  attrs: { name: "", id: "category" },
                   on: {
                     change: [
                       function ($event) {
@@ -39224,7 +39250,7 @@ var render = function () {
                             var val = "_value" in o ? o._value : o.value
                             return val
                           })
-                        _vm.filter = $event.target.multiple
+                        _vm.category = $event.target.multiple
                           ? $$selectedVal
                           : $$selectedVal[0]
                       },
@@ -39235,17 +39261,17 @@ var render = function () {
                   },
                 },
                 [
-                  _c("option", [_vm._v("Categories")]),
+                  _c("option", { attrs: { value: "" } }, [_vm._v("All")]),
                   _vm._v(" "),
                   _vm._l(_vm.categories, function (category) {
                     return _c(
                       "option",
-                      { key: category.id, domProps: { value: category.name } },
+                      { key: category.id, domProps: { value: category.id } },
                       [
                         _vm._v(
-                          "\n            " +
+                          "\n                        " +
                             _vm._s(category.name) +
-                            "\n          "
+                            "\n                    "
                         ),
                       ]
                     )
@@ -39256,9 +39282,7 @@ var render = function () {
             ]),
             _vm._v(" "),
             _c("div", { staticClass: "pl-4" }, [
-              _c("label", { attrs: { for: "filter" } }, [
-                _vm._v("sort by " + _vm._s(_vm.sort)),
-              ]),
+              _c("label", { attrs: { for: "sort" } }, [_vm._v("sort by ")]),
               _vm._v(" "),
               _c(
                 "select",
@@ -39272,7 +39296,7 @@ var render = function () {
                     },
                   ],
                   staticClass: "p-2",
-                  attrs: { name: "", id: "filer" },
+                  attrs: { name: "", id: "sort" },
                   on: {
                     change: [
                       function ($event) {
@@ -39321,21 +39345,29 @@ var render = function () {
                   _c("td", [_vm._v(_vm._s(product.price))]),
                   _vm._v(" "),
                   _c("td", [
-                    _c(
-                      "a",
-                      {
-                        attrs: {
-                          href: product.image,
-                          target: "_blank",
-                          rel: "noopener noreferrer",
-                        },
-                      },
-                      [
-                        _c("img", {
-                          attrs: { src: product.image, height: "50", alt: "" },
-                        }),
-                      ]
-                    ),
+                    product.image
+                      ? _c("div", [
+                          _c(
+                            "a",
+                            {
+                              attrs: {
+                                href: product.image,
+                                target: "_blank",
+                                rel: "noopener noreferrer",
+                              },
+                            },
+                            [
+                              _c("img", {
+                                attrs: {
+                                  src: product.image,
+                                  height: "50",
+                                  alt: "",
+                                },
+                              }),
+                            ]
+                          ),
+                        ])
+                      : _c("div", [_vm._v("none")]),
                   ]),
                 ])
               }),
@@ -54763,7 +54795,7 @@ Vue.compile = compileToFunctions;
 /***/ ((module) => {
 
 "use strict";
-module.exports = JSON.parse('{"_args":[["axios@0.21.4","/home/adibe/Youcan/lara"]],"_development":true,"_from":"axios@0.21.4","_id":"axios@0.21.4","_inBundle":false,"_integrity":"sha512-ut5vewkiu8jjGBdqpM44XxjuCjq9LAKeHVmoVfHVzy8eHgxxq8SbAVQNovDA8mVi05kP0Ea/n/UzcSHcTJQfNg==","_location":"/axios","_phantomChildren":{},"_requested":{"type":"version","registry":true,"raw":"axios@0.21.4","name":"axios","escapedName":"axios","rawSpec":"0.21.4","saveSpec":null,"fetchSpec":"0.21.4"},"_requiredBy":["#DEV:/"],"_resolved":"https://registry.npmjs.org/axios/-/axios-0.21.4.tgz","_spec":"0.21.4","_where":"/home/adibe/Youcan/lara","author":{"name":"Matt Zabriskie"},"browser":{"./lib/adapters/http.js":"./lib/adapters/xhr.js"},"bugs":{"url":"https://github.com/axios/axios/issues"},"bundlesize":[{"path":"./dist/axios.min.js","threshold":"5kB"}],"dependencies":{"follow-redirects":"^1.14.0"},"description":"Promise based HTTP client for the browser and node.js","devDependencies":{"coveralls":"^3.0.0","es6-promise":"^4.2.4","grunt":"^1.3.0","grunt-banner":"^0.6.0","grunt-cli":"^1.2.0","grunt-contrib-clean":"^1.1.0","grunt-contrib-watch":"^1.0.0","grunt-eslint":"^23.0.0","grunt-karma":"^4.0.0","grunt-mocha-test":"^0.13.3","grunt-ts":"^6.0.0-beta.19","grunt-webpack":"^4.0.2","istanbul-instrumenter-loader":"^1.0.0","jasmine-core":"^2.4.1","karma":"^6.3.2","karma-chrome-launcher":"^3.1.0","karma-firefox-launcher":"^2.1.0","karma-jasmine":"^1.1.1","karma-jasmine-ajax":"^0.1.13","karma-safari-launcher":"^1.0.0","karma-sauce-launcher":"^4.3.6","karma-sinon":"^1.0.5","karma-sourcemap-loader":"^0.3.8","karma-webpack":"^4.0.2","load-grunt-tasks":"^3.5.2","minimist":"^1.2.0","mocha":"^8.2.1","sinon":"^4.5.0","terser-webpack-plugin":"^4.2.3","typescript":"^4.0.5","url-search-params":"^0.10.0","webpack":"^4.44.2","webpack-dev-server":"^3.11.0"},"homepage":"https://axios-http.com","jsdelivr":"dist/axios.min.js","keywords":["xhr","http","ajax","promise","node"],"license":"MIT","main":"index.js","name":"axios","repository":{"type":"git","url":"git+https://github.com/axios/axios.git"},"scripts":{"build":"NODE_ENV=production grunt build","coveralls":"cat coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js","examples":"node ./examples/server.js","fix":"eslint --fix lib/**/*.js","postversion":"git push && git push --tags","preversion":"npm test","start":"node ./sandbox/server.js","test":"grunt test","version":"npm run build && grunt version && git add -A dist && git add CHANGELOG.md bower.json package.json"},"typings":"./index.d.ts","unpkg":"dist/axios.min.js","version":"0.21.4"}');
+module.exports = JSON.parse('{"name":"axios","version":"0.21.4","description":"Promise based HTTP client for the browser and node.js","main":"index.js","scripts":{"test":"grunt test","start":"node ./sandbox/server.js","build":"NODE_ENV=production grunt build","preversion":"npm test","version":"npm run build && grunt version && git add -A dist && git add CHANGELOG.md bower.json package.json","postversion":"git push && git push --tags","examples":"node ./examples/server.js","coveralls":"cat coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js","fix":"eslint --fix lib/**/*.js"},"repository":{"type":"git","url":"https://github.com/axios/axios.git"},"keywords":["xhr","http","ajax","promise","node"],"author":"Matt Zabriskie","license":"MIT","bugs":{"url":"https://github.com/axios/axios/issues"},"homepage":"https://axios-http.com","devDependencies":{"coveralls":"^3.0.0","es6-promise":"^4.2.4","grunt":"^1.3.0","grunt-banner":"^0.6.0","grunt-cli":"^1.2.0","grunt-contrib-clean":"^1.1.0","grunt-contrib-watch":"^1.0.0","grunt-eslint":"^23.0.0","grunt-karma":"^4.0.0","grunt-mocha-test":"^0.13.3","grunt-ts":"^6.0.0-beta.19","grunt-webpack":"^4.0.2","istanbul-instrumenter-loader":"^1.0.0","jasmine-core":"^2.4.1","karma":"^6.3.2","karma-chrome-launcher":"^3.1.0","karma-firefox-launcher":"^2.1.0","karma-jasmine":"^1.1.1","karma-jasmine-ajax":"^0.1.13","karma-safari-launcher":"^1.0.0","karma-sauce-launcher":"^4.3.6","karma-sinon":"^1.0.5","karma-sourcemap-loader":"^0.3.8","karma-webpack":"^4.0.2","load-grunt-tasks":"^3.5.2","minimist":"^1.2.0","mocha":"^8.2.1","sinon":"^4.5.0","terser-webpack-plugin":"^4.2.3","typescript":"^4.0.5","url-search-params":"^0.10.0","webpack":"^4.44.2","webpack-dev-server":"^3.11.0"},"browser":{"./lib/adapters/http.js":"./lib/adapters/xhr.js"},"jsdelivr":"dist/axios.min.js","unpkg":"dist/axios.min.js","typings":"./index.d.ts","dependencies":{"follow-redirects":"^1.14.0"},"bundlesize":[{"path":"./dist/axios.min.js","threshold":"5kB"}]}');
 
 /***/ })
 

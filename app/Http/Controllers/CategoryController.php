@@ -2,29 +2,36 @@
 
 namespace App\Http\Controllers;
 
-use App\Repositories\CategoryRepository;
+use App\Services\CategoryService;
+use Exception;
 
 class CategoryController extends Controller
 {
     protected $category;
 
-    /**
-     * categoryController constructor.
-     *
-     * @param CategoryRepository $category
-     */
-    public function __construct(CategoryRepository $category)
+
+
+    protected $categoryService;
+
+    public function __construct(CategoryService $categoryService)
     {
-        $this->category = $category;
+        $this->categoryService = $categoryService;
     }
 
-    /**
-     * List all categorys.
-     *
-     * @return mixed
-     */
+
     public function index()
     {
-        return $this->category->all();
+        $result = ['status' => 200];
+
+        try {
+            $result['data'] = $this->categoryService->getAll();
+        } catch (Exception $e) {
+            $result = [
+                'status' => 500,
+                'error' => $e->getMessage()
+            ];
+        }
+
+        return response()->json($result, $result['status']);
     }
 }
