@@ -2,104 +2,54 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Category;
-use App\Models\Product;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
 
-use App\Services\Product as ProductService;
+
+use App\Services\ProductService as ProductService;
+use Exception;
 
 class ProductController extends Controller
 {
 
 
-    /**
-     * Create a new controller instance.
-     *
-     * @param Request $request
-     * @return void
-     */
-    public function __construct(Request $request)
+    protected $productService;
+
+    public function __construct(ProductService $productService)
     {
-        $this->_request  = $request;
+        $this->productService = $productService;
     }
 
-
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index(ProductService $producService)
+    public function index()
     {
-        return $producService->get(
-            [
-                'filter' => request()->filter,
-                'sort' => request()->sort
-            ],
-            request()->has('filter'),
-            request()->has('sort'),
-            request()->filled('filter'),
-            request()->filled('sort')
+        $result = ['status' => 200];
 
-        );
-    }
-
-
-
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(ProductService $producService)
-    {
-        $validator = $producService->validator($this->_request->all());
-
-
-        if (!$validator->fails()) {
-
-            $producService->create($this->_request->all());
-
-            return response('product successfully added!', 200);
+        try {
+            $result['data'] = $this->productService->getAll();
+        } catch (Exception $e) {
+            $result = [
+                'status' => 500,
+                'error' => $e->getMessage()
+            ];
         }
 
-        return response('something went wrong', 500);
+        return response()->json($result, $result['status']);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
+    public function store(Request  $request)
     {
-        //
-    }
+        $data = $request->all();
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(ProductService $producService)
-    {
-        return $producService->delete(request()->id);
+        $result = ['status' => 200];
+
+        try {
+            $result['data'] = $this->productService->saveProductData($data);
+        } catch (Exception $e) {
+            $result = [
+                'status' => 500,
+                'error' => $e->getMessage()
+            ];
+        }
+        return response()->json($result, $result['status']);
     }
 }
